@@ -27,6 +27,25 @@
     const welcome = document.querySelector('.welcome-note');
     let firstSent = false;
 
+    let statusTimer = null;
+
+    function showWorkingThenReceived() {
+      if (!welcome) return;
+      // clear any pending timer so rapid sends reset the timing
+      if (statusTimer) clearTimeout(statusTimer);
+      welcome.classList.remove('muted');
+      welcome.classList.add('working');
+      welcome.textContent = 'working..';
+      // after ~2 seconds, show received message text
+      statusTimer = setTimeout(() => {
+        welcome.classList.remove('working');
+        welcome.classList.add('muted');
+        welcome.textContent = 'Tristan AI has received your message.';
+        welcome.setAttribute('aria-hidden', 'false');
+        statusTimer = null;
+      }, 2000);
+    }
+
     function appendMessage(text) {
       const msg = document.createElement('div');
       msg.className = 'message outgoing';
@@ -34,14 +53,12 @@
       msg.textContent = text;
       messages.appendChild(msg);
 
-      // on first message, update the welcome text and placeholder
+      // update status: show working, then received (for every message)
+      showWorkingThenReceived();
+
+      // on first message, also change the placeholder
       if (!firstSent) {
         firstSent = true;
-        if (welcome) {
-          welcome.textContent = "Tristan AI has recieved your message.";
-          welcome.classList.add('muted');
-          welcome.setAttribute('aria-hidden', 'false');
-        }
         textarea.placeholder = 'Type another message...';
       }
 

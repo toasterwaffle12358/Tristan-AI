@@ -160,6 +160,31 @@ body{
   transform: translateY(-2px);
 }
 
+/* working state: subtle pulse and ellipsis effect */
+.welcome-note.working{
+  color: rgba(255,255,255,0.95);
+  transform: translateY(0);
+  font-style: italic;
+}
+.welcome-note.working::after{
+  content: '';
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-left: 0.45rem;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  opacity: 0.9;
+  animation: working-dots 900ms steps(3,end) infinite;
+}
+
+@keyframes working-dots{
+  0% { transform: translateX(0); opacity: .85 }
+  33% { transform: translateX(2px); opacity: .65 }
+  66% { transform: translateX(-2px); opacity: .45 }
+  100% { transform: translateX(0); opacity: .85 }
+}
+
 .message{
   align-self:flex-end;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.432), rgba(0, 0, 0, 0.226));
