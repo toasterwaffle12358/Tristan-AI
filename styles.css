@@ -1,0 +1,225 @@
+/* Dark purple -> pink gradient + centered rounded card */
+:root{
+  --bg-deep:#0b0620;
+  --purple-1:#181334;
+  --purple-2:#56346d;
+  --pink:#dc67c7;
+  --glass: rgba(255, 255, 255, 0.366);
+  --text: #f6f3ff;
+}
+
+/* Local Magtis font (placed in ./fonts/magtis.otf) */
+@font-face{
+  font-family: 'Magtis';
+  src: url('fonts/magtis.otf') format('opentype');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face{
+  font-family: 'Disket Bold';
+  src: url('fonts/Disket-Mono-Bold.ttf') format('opentype');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face{
+  font-family: 'Wild World';
+  src: url('fonts/WILD\ WORLD.otf') format('opentype');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  color:var(--text);
+  background-image: url(/resources/background.png);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.wrap{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:1.5rem;
+  padding:2rem;
+}
+
+.title{
+  margin:0;
+  font-family: 'Wild World', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  font-weight:800;
+  line-height:1;
+  color:var(--text);
+
+  /* responsive size */
+  font-size:12vw;
+  text-transform:lowercase;
+  letter-spacing:0.02em;
+  text-shadow: 0 8px 30px rgb(0, 0, 0), 0 2px 6px rgb(0, 0, 0);
+  filter: drop-shadow(0 6px 18px rgba(106,32,184,0.25));
+  
+}
+.outlined{
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 0.5vw rgb(255, 255, 255);
+  text-shadow: 0 0px 10px rgba(0, 0, 0, 0.562);
+}
+
+.card{
+  width:min(720px, 92%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border-radius:18px;
+  padding:2rem 2.5rem;
+  /* make the card a normal block so the textarea stretches full width */
+  display:block;
+  text-align:left;
+  position:relative;
+  box-shadow: 0 18px 60px rgba(6,5,12,0.55), 0 2px 6px rgba(0,0,0,0.35), inset 1px 1px 2px rgba(255,255,255,0);
+  border:1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(50px) saturate(100%) brightness(150%);
+  /* smooth transitions for hover/focus interactions */
+  transition: transform 240ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms cubic-bezier(.2,.9,.2,1);
+}
+
+.card:hover{
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 30px 100px rgba(86,52,109,0.28), 0 10px 40px rgba(0,0,0,0.45);
+}
+
+.card:focus-within{
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 34px 110px rgba(86,52,109,0.34), 0 12px 48px rgba(0,0,0,0.5);
+}
+
+.card-text{
+  margin:0;
+  color:rgba(246,243,255,0.95);
+  font-size:clamp(1rem, 2.2vw, 1.25rem);
+}
+
+/* editable textarea inside the card */
+.card-input{
+  width:100%;
+  min-height:140px;
+  resize:vertical;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: clamp(1rem, 1.8vw, 1.125rem);
+  line-height:1.45;
+  padding:0; /* card already has padding */
+  -webkit-font-smoothing:antialiased;
+  border-radius:14px;
+  padding:0.6rem 0.9rem;
+  box-shadow:inset 1px 2px 8px rgb(0, 0, 0);
+}
+
+.card-input::placeholder{
+  color: rgba(246,243,255,0.65);
+}
+
+.card-input:focus{
+  caret-color: var(--pink);
+}
+
+/* messages area and bubbles */
+.messages{
+  max-height:40vh;
+  min-height:80px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:0.6rem;
+  backdrop-filter: brightness(10%) blur(12px) saturate(120%);
+  padding:0.25rem 0 0.8rem 0; /* small gap above input */
+  /* Modern, minimalist scrollbars */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(255,255,255,0.12) transparent; /* thumb then track */
+  -webkit-overflow-scrolling: touch;
+}
+
+.welcome-note{
+  font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+  color: rgba(246,243,255,0.85);
+  margin-bottom: 0.45rem;
+  text-align:left;
+  transition: color 220ms ease, opacity 220ms ease, transform 220ms ease;
+}
+.welcome-note.muted{
+  color: rgba(246,243,255,0.48);
+  transform: translateY(-2px);
+}
+
+.message{
+  align-self:flex-end;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.432), rgba(0, 0, 0, 0.226));
+  color: var(--text);
+  padding:0.6rem 0.9rem;
+  border-radius:14px;
+  max-width:82%;
+  border-color: black;
+  box-shadow:inset 1px 2px 8px rgb(0, 0, 0);
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  transform: translateY(6px);
+  backdrop-filter: brightness(10%) blur(12px) saturate(120%);
+  animation: bubble-in 240ms cubic-bezier(.2,.9,.2,1) forwards;
+}
+
+@keyframes bubble-in{
+  to{ transform: translateY(0); opacity:1 }
+}
+
+/* make incoming messages look slightly different if needed */
+.message.incoming{
+  align-self:flex-start;
+  background: linear-gradient(180deg, rgba(108,58,156,0.16), rgba(108,58,156,0.08));
+}
+
+.input-row{
+  margin-top:0.75rem;
+}
+
+/* WebKit / Blink scrollbar styling for .messages */
+.messages::-webkit-scrollbar{
+  width:8px;
+  height:8px;
+}
+.messages::-webkit-scrollbar-track{
+  background: transparent;
+}
+.messages::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+  border-radius:999px;
+  border:2px solid transparent;
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+.messages::-webkit-scrollbar-thumb:hover{
+  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.10));
+}
+
+/* subtle accent glow around the card */
+.card::after{
+  content:'';
+  position:absolute;
+  pointer-events:none;
+}
+
+/* make sure the wrap can position the glow */
+.wrap{position:relative}
+
+@media (prefers-reduced-motion: no-preference){
+  .title{transition: transform 350ms cubic-bezier(.2,.9,.2,1)}
+  .card:hover{transform:translateY(-4px)}
+}
