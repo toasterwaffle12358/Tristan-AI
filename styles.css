@@ -37,6 +37,7 @@ body{
   margin:0;
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
   color:var(--text);
+  background-size: cover;
   background-image: url('./resources/background.png');
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
@@ -74,7 +75,8 @@ body{
 }
 
 .card{
-  width:min(720px, 92%);
+  /* initial width bumped up to be larger by default, still responsive */
+  width: min(920px, 92%);
   background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
   border-radius:18px;
   padding:2rem 2.5rem;
@@ -85,6 +87,11 @@ body{
   box-shadow: 0 18px 60px rgba(6,5,12,0.55), 0 2px 6px rgba(0,0,0,0.35), inset 1px 1px 2px rgba(255,255,255,0);
   border:1px solid rgba(255,255,255,0.06);
   backdrop-filter: blur(50px) saturate(100%) brightness(150%);
+  /* allow horizontal resizing by the user */
+  resize: horizontal;
+  overflow: auto; /* required for resize to work reliably */
+  min-width: 280px;
+  max-width: calc(100% - 4rem);
   /* smooth transitions for hover/focus interactions */
   transition: transform 240ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms cubic-bezier(.2,.9,.2,1);
 }
@@ -140,7 +147,7 @@ body{
   display:flex;
   flex-direction:column;
   gap:0.6rem;
-  backdrop-filter: brightness(10%) blur(12px) saturate(120%);
+  
   padding:0.25rem 0 0.8rem 0; /* small gap above input */
   /* Modern, minimalist scrollbars */
   scrollbar-width: thin; /* Firefox */
@@ -209,6 +216,17 @@ body{
 .message.incoming{
   align-self:flex-start;
   background: linear-gradient(180deg, rgba(108,58,156,0.16), rgba(108,58,156,0.08));
+}
+
+/* system / status messages shown by the UI (e.g. "ai is busy") */
+.message.system{
+  align-self:center;
+  background: rgba(255,255,255,0.03);
+  color: rgba(246,243,255,0.78);
+  font-style: italic;
+  padding:0.45rem 0.8rem;
+  border-radius:12px;
+  max-width:70%;
 }
 
 .input-row{

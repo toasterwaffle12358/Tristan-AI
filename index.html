@@ -9,7 +9,7 @@
 </head>
 <body>
   <main class="wrap">
-    <h1 class="title">Tristan<span class="outlined">AI</span></h1>
+    <h1 class="title">Tristan<span class="outlined"> AI</span></h1>
     <div class="card" role="region" aria-label="Main content box">
       <div class="welcome-note" aria-hidden="false">Tristan AI is ready for your questions</div>
       <div class="messages" aria-live="polite" aria-label="Chat messages"></div>
@@ -26,10 +26,13 @@
     const messages = document.querySelector('.messages');
     const welcome = document.querySelector('.welcome-note');
     let firstSent = false;
+    // count outgoing messages without an incoming response
+    let pendingWithoutResponse = 0;
+    // count control variables for system messages
 
     let statusTimer = null;
 
-    function showWorkingThenReceived() {
+  function showWorkingThenReceived() {
       if (!welcome) return;
       // clear any pending timer so rapid sends reset the timing
       if (statusTimer) clearTimeout(statusTimer);
@@ -47,6 +50,8 @@
     }
 
     function appendMessage(text) {
+  // increment pending outgoing count; will be reset when an incoming message arrives
+  pendingWithoutResponse++;
       const msg = document.createElement('div');
       msg.className = 'message outgoing';
       // preserve line breaks
@@ -62,7 +67,22 @@
         textarea.placeholder = 'Type another message...';
       }
 
+      // If 3 messages have been sent with no incoming response, show a system note
+      if (pendingWithoutResponse >= 3) {
+        appendSystemMessage('it seems tristan ai is busy right now');
+        // reset the counter after notifying
+        pendingWithoutResponse = 0;
+      }
+
       // scroll to bottom smoothly
+      messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+    }
+
+    function appendSystemMessage(text) {
+      const sys = document.createElement('div');
+      sys.className = 'message system incoming';
+      sys.textContent = text;
+      messages.appendChild(sys);
       messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
     }
 
@@ -77,6 +97,9 @@
         requestAnimationFrame(() => textarea.focus());
       }
     });
+
+    // (Socket.IO client removed) Remote push/AI messages via Node server were removed.
+    // If you want to re-add server push later, we can wire Socket.IO back in here.
   });
 </script>
 </html>
