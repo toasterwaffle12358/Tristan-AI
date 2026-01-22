@@ -37,7 +37,7 @@ body{
   margin:0;
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
   color:var(--text);
-  background-image: url(/resources/background.png);
+  background-image: url(resources/background.png);
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
 }
